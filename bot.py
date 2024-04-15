@@ -1,49 +1,33 @@
-# from fastapi import FastAPI
-# from fastapi.responses import RedirectResponse
-# from textblob import TextBlob
-import streamlit as st
+import os
 import pandas as pd
 import numpy as np
-import seaborn as sns
 import pyspark
 from pyspark.sql.types import *
 from pyspark.sql.types import StructType, StringType, LongType, DoubleType, StructField
 from pyspark.sql import SparkSession
-
 spark = SparkSession.builder.getOrCreate()
-
-import os
-from dotenv import load_dotenv
-load_dotenv()
 from langchain_experimental.agents.agent_toolkits.spark.base import create_spark_dataframe_agent
 from langchain.llms import OpenAI
 from langchain_experimental.tools import PythonREPLTool
-import gradio as gr
+import certifi
+import ssl
 
-# app = FastAPI(title="SaamaBot")
+# Update the SSL context to use the system's root certificates
+ssl_context = ssl.create_default_context(cafile=certifi.where())
 
-# @app.get("/", include_in_schema=False)
-# def index():
-    # return RedirectResponse("/docs", status_code=308)
+# Set OpenAI API key
+os.environ['OPENAI_API_KEY'] = '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'
 
-# @app.get("/SaamaBot/{text}")
-
-# Get the OpenAI API key from the environment variable
-# openai_api_key = os.environ.get('OPENAI_API_KEY')
-# os.environ['OPENAI_API_KEY'] = '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'
-openai_api_key = os.getenv('OPENAI_API_KEY')
+# Read the CSV file
+SalesDF = spark.read.csv('/mnt/adls/chile/dev/machine_learning/test_llm1.csv/', header=True)
 
 # Initialize OpenAI model
-# chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
-chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_key=openai_api_key)
-
-# Create the Spark DataFrame with selected columns
-# (Your existing DataFrame creation code)
+chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
 
 # Create the agent with a customized prompt and the PythonREPLTool
-agent_executor = create_spark_dataframe_agent(chatgpt, SalesDF, additional_tools=[PythonREPLTool()], prompt="""
-You are an intelligent agent tasked with analyzing a sales data DataFrame and answering questions related to promotions, volumes, and other sales metrics. The DataFrame contains columns like 'promo id', 'planned baseline volume units', 'actual baseline volume', and others. Use the provided tools and your knowledge to accurately interpret the data and provide helpful responses to the questions asked. You have access to the PySpark library and can use its functions to perform operations on the DataFrame, such as filtering, aggregating, sorting, and more. If you need to perform any data manipulation or calculations, feel free to use the Python REPL tool and leverage PySpark functions.
-""")
+agent_executor = create_spark_dataframe_agent(
+    chatgpt, SalesDF, additional_tools=[PythonREPLTool()], prompt="""
+You are an intelligent agent tasked with analyzing a sales data DataFrame and answering questions related to promotions, volumes, and other sales metrics. The DataFrame contains columns like 'promo id', 'planned baseline volume units', 'actual baseline volume', and others. Use the provided tools and your knowledge to accurately interpret the data and provide helpful responses to the questions asked. You have access to the PySpark library and can use its functions to perform operations on the DataFrame, such as filtering, aggregating, sorting, and more. If you need to perform any data manipulation or calculations, feel free to use the Python REPL tool and leverage PySpark functions.""")
 
 # Define the chatbot function
 def chatbot(input_text):
@@ -51,15 +35,5 @@ def chatbot(input_text):
         reply = agent_executor.run(input_text)
         return reply
 
-# Create Gradio interface
-iface = gr.Interface(
-    chatbot,
-    gr.components.Textbox(lines=7, label="Chat with Me"),
-    gr.components.Textbox(label="Reply"),
-    title="Unilever bot",
-    description="Ask anything you want",
-    theme="compact")
-
-# Launch the interface with the share=True and server_name="0.0.0.0" arguments
-iface.launch(share=False, server_name="0.0.0.0",server_port=8080)
-#iface.launch(share=True, server_name="10.237.61.186",server_port=8080)
+# Export the chatbot function
+export chatbot
