@@ -26,7 +26,8 @@ def index():
 @app.get("/SaamaBot/{text}")
 
 # Set OpenAI API key
-os.environ['OPENAI_API_KEY'] = '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'
+# os.environ['OPENAI_API_KEY'] = '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'
+OPENAI_API_KEY = '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'
 
 #SalesDF=spark.read.csv(r'C:\Users\rachit.choudhary\Downloads\test_llm1.csv')
 
@@ -62,7 +63,8 @@ import ssl
 
 
 # Initialize OpenAI model
-chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
+# chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
+chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_key=OPENAI_API_KEY)
 
 # Create the agent with a customized prompt and the PythonREPLTool
 agent_executor = create_spark_dataframe_agent(chatgpt, SalesDF, additional_tools=[PythonREPLTool()], prompt="""
