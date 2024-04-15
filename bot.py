@@ -12,6 +12,8 @@ from pyspark.sql import SparkSession
 spark = SparkSession.builder.getOrCreate()
 
 import os
+from dotenv import load_dotenv
+load_dotenv()
 from langchain_experimental.agents.agent_toolkits.spark.base import create_spark_dataframe_agent
 from langchain.llms import OpenAI
 from langchain_experimental.tools import PythonREPLTool
@@ -27,10 +29,12 @@ def index():
 
 # Get the OpenAI API key from the environment variable
 # openai_api_key = os.environ.get('OPENAI_API_KEY')
-os.environ['OPENAI_API_KEY'] = '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'
+# os.environ['OPENAI_API_KEY'] = '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'
+openai_api_key = os.getenv('OPENAI_API_KEY')
 
 # Initialize OpenAI model
-chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
+# chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
+chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_key=openai_api_key)
 
 # Create the Spark DataFrame with selected columns
 # (Your existing DataFrame creation code)
