@@ -17,6 +17,14 @@ from langchain.llms import OpenAI
 from langchain_experimental.tools import PythonREPLTool
 import gradio as gr
 
+app = FastAPI(title="SaamaBot")
+
+@app.get("/", include_in_schema=False)
+def index():
+    return RedirectResponse("/docs", status_code=308)
+
+@app.get("/SaamaBot/{text}")
+
 # Set OpenAI API key
 os.environ['OPENAI_API_KEY'] = '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'
 
