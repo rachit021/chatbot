@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from textblob import TextBlob
+import streamlit as st
 import pandas as pd
 import numpy as np
 import seaborn as sns
@@ -19,13 +20,13 @@ from langchain.llms import OpenAI
 from langchain_experimental.tools import PythonREPLTool
 import gradio as gr
 
-app = FastAPI(title="SaamaBot")
+# app = FastAPI(title="SaamaBot")
 
-@app.get("/", include_in_schema=False)
-def index():
-    return RedirectResponse("/docs", status_code=308)
+# @app.get("/", include_in_schema=False)
+# def index():
+    # return RedirectResponse("/docs", status_code=308)
 
-@app.get("/SaamaBot/{text}")
+# @app.get("/SaamaBot/{text}")
 
 # Get the OpenAI API key from the environment variable
 # openai_api_key = os.environ.get('OPENAI_API_KEY')
