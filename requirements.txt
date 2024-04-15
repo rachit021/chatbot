@@ -13,6 +13,6 @@ urllib3
 tqdm
 requests
 typing-extensions
-pyspark==3.3.2
-spark-core==3.3.2
-spark-sql==3.3.2
+pyspark
+spark-core
+spark-sql
