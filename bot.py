@@ -1,3 +1,6 @@
+from fastapi import FastAPI
+from fastapi.responses import RedirectResponse
+from textblob import TextBlob
 import pandas as pd
 import numpy as np
 import seaborn as sns
