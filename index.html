@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spark DataFrame Chatbot</title>
+</head>
+<body>
+    <h1>Spark DataFrame Chatbot</h1>
+    <form method="post">
+        <label for="user_input">Ask a question:</label>
+        <input type="text" id="user_input" name="user_input" required>
+        <button type="submit">Submit</button>
+    </form>
+    {% if bot_response %}
+        <h2>Bot Response:</h2>
+        <p>{{ bot_response }}</p>
+    {% endif %}
+</body>
+</html>
