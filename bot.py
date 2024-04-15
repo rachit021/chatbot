@@ -25,46 +25,14 @@ def index():
 
 @app.get("/SaamaBot/{text}")
 
-# Set OpenAI API key
-# os.environ['OPENAI_API_KEY'] = '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'
-OPENAI_API_KEY = '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'
-
-#SalesDF=spark.read.csv(r'C:\Users\rachit.choudhary\Downloads\test_llm1.csv')
-
-schema = StructType([
-    StructField("Promo ID", StringType(), True),
-    StructField("Category", StringType(), True),
-    StructField("Brand", StringType(), True),
-    StructField("Product", StringType(), True),
-    StructField("Promo Name", StringType(), True),
-    StructField("Planned Baseline Volume (Units)", LongType(), True),
-    StructField("Actual Baseline Volume (Units)", LongType(), True),
-    StructField("Planned ROI%", DoubleType(), True),
-    StructField("Actual ROI%", DoubleType(), True),
-    StructField("Planned ROMI %", DoubleType(), True),
-    StructField("Actual ROMI %", DoubleType(), True)
-])
-
-# Create the Spark DataFrame with selected columns
-data = [
-    ("A-84941", "DEOS", "EXA", "DEOS EXA DEOS - AERO BS XL - 210 ML", "TMI CAT - Plan Promo Sulley - Coppel 2x115", 12104, 170, -15.20, 14571.00, -15.20, 14571.00),
-    ("A-105672", "DEOS", "EXA", "DEOS EXA DEOS - AERO BS XL - 210 ML", "DEO C1 2024 90 DIAS (ENE) - SULLY - 2x $120 - 30 DÍAS - S/FRAGUA", 1631, 105, 164.20, 4208.00, 164.20, 4208.00),
-    ("A-105673", "DEOS", "EXA", "DEOS EXA DEOS - AERO BS XL - 210 ML", "DEO C1 2024 90 DIAS (ENE) - SULLY - 2x $120 - 30 DÍAS - S/FRAGUA", 162, 107, 1640.00, 4207.00, 1642.00, 208.00)
-]
-
-SalesDF = spark.createDataFrame(data, schema)
-
-import certifi
-import ssl
-
-# ssl_context = ssl.create_default_context(cafile=certifi.where())
-# chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_kwargs={"request_timeout": 60, "ssl_context": ssl_context})
-
-
+# Get the OpenAI API key from the environment variable
+openai_api_key = os.environ.get('OPENAI_API_KEY')
 
 # Initialize OpenAI model
-# chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106")
-chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_key=OPENAI_API_KEY)
+chatgpt = OpenAI(model_name="gpt-3.5-turbo-1106", openai_api_key=openai_api_key)
+
+# Create the Spark DataFrame with selected columns
+# (Your existing DataFrame creation code)
 
 # Create the agent with a customized prompt and the PythonREPLTool
 agent_executor = create_spark_dataframe_agent(chatgpt, SalesDF, additional_tools=[PythonREPLTool()], prompt="""
