@@ -14,5 +14,4 @@ tqdm
 requests
 typing-extensions
 pyspark
-spark-core
-spark-sql
+spark
