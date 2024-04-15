@@ -16,3 +16,4 @@ typing-extensions
 pyspark
 spark
 gunicorn
+Flask
