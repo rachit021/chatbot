@@ -10,3 +10,8 @@ python-dotenv
 streamlit
 seaborn
 openjdk-11-jdk
+certifi
+urllib3
+tqdm
+requests
+typing-extensions
