@@ -9,7 +9,6 @@ pyodbc
 python-dotenv
 streamlit
 seaborn
-openjdk-17-jdk
 certifi
 urllib3
 tqdm
