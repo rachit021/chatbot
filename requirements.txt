@@ -6,3 +6,4 @@ langchain_experimental
 openai==0.28
 gradio
 pyodbc
+python-dotenv
