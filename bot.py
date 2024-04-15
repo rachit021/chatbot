@@ -1,6 +1,6 @@
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
-from textblob import TextBlob
+# from fastapi import FastAPI
+# from fastapi.responses import RedirectResponse
+# from textblob import TextBlob
 import streamlit as st
 import pandas as pd
 import numpy as np
